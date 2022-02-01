@@ -9,13 +9,13 @@ module.exports = {
 
   async execute(interaction){
     joke = 'API not responding'
-
+    //SUBSCRIBE TO DAD JOKES API AT RAPID TO GET YOUR OWN KEY
     const options = {
       method: 'GET',
       url: 'https://dad-jokes.p.rapidapi.com/random/joke',
       headers: {
         'x-rapidapi-host': 'dad-jokes.p.rapidapi.com',
-        'x-rapidapi-key': '41f7f72e5fmsh94bd83649bb5f6ep1c3527jsn27e54ec1e204',
+        'x-rapidapi-key': PRIVATE_KEY,
         useQueryString: true
       }
     };
