@@ -6,10 +6,12 @@ server.all("/", (req, res) => {
   res.send("Bot is running!")
 })
 
-function keepAlive() {
+//The server will listen to port 3000
+function keepAlive(){
   server.listen(3000, () => {
     console.log("Server is ready.")
   })
 }
 
-module.exports = keepAlive
+//Export this to run from bot.js file
+module.exports  = keepAlive

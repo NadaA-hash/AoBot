@@ -1,33 +1,37 @@
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-
-
+//Initalization for Discord
+const { Client, Collection, Intents } = require('discord.js');
+//clarifes what flags Ao will be using
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+//For database in replit
+const Database = require("@replit/database")
+//For command handler
+const fs = require('fs');
+client.commands = new Collection();
+//Secrect tokens for Ao
 const token = process.env['token']
 const CLIENT_ID = process.env['client_id']
 const GUILD_ID = process.env['guild_id']
+//For Uptime Robot Website
+const keepAlive = require('./server')
 
-const commands = [{
-  name: 'ao',
-  description: 'Replies with its own way  of saying hello'
-},{
-  name: 'inspire',
-  description: 'Gives random quote.'
-}]; 
+const commandFiles = fs.readdirSync(`./commands/`).filter(files => files.endsWith('.js'));
+for (const file of commandFiles){
+  const command = require(`./commands/${file}`);
 
-console.log(CLIENT_ID)
-const rest = new REST({ version: '9' }).setToken(token);
+  client.commands.set(command.data.name, command);
+}
 
-(async () => {
-  try {
-    console.log('Started refreshing application (/) commands.');
-
-    await rest.put(
-      Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
-      { body: commands },
-    );
-
-    console.log('Successfully reloaded application (/) commands.');
-  } catch (error) {
-    console.error(error);
+const eventFiles = fs.readdirSync(`./events/`).filter(files => files.endsWith('.js'));
+for (const file of eventFiles){
+  const event = require(`./events/${file}`);
+  if(event.once){
+    client.once(event.name, (...args) => event.execute(...args, client));
   }
-})();
+  else{
+    client.on(event.name, (...args) => event.execute(...args, client));
+  }
+}
+
+//starts the server
+keepAlive()
+client.login(token);
