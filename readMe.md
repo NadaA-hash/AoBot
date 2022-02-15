@@ -46,8 +46,7 @@ Also can: ao quote new .. ao quote del #; accepts 1 image
 
 
 ## Known issues
-* There are no cooldowns added to commands.
-* Bands command may appear to give same option depsite being randomized via ```Javascript Math.floor(Math.random() * bandAnswers.length)```
+* There are no cooldowns added to commands causing the bot to lag/not respond time to time.
 
 ## APIs Used
 For inspiring quotes (free): https://github.com/kishlaya/inspirobot-bot/blob/master/README.md
